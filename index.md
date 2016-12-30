@@ -1,6 +1,6 @@
 ---
 layout: page
-title: 重新整理
+title: 首页
 tagline:
 ---
 <p>
