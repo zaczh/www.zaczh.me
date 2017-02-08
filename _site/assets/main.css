@@ -190,10 +190,10 @@ pre {
         text-align: center; }
         .site-nav .menu-icon > svg path {
           fill: #424242; }
-      .site-nav .hide {
+      .site-nav .trigger {
         clear: both;
         display: none; }
-      .site-nav .show {
+      .site-nav:hover .trigger {
         display: block;
         padding-bottom: 5px; }
       .site-nav .page-link {
