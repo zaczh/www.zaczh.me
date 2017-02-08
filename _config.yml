@@ -17,7 +17,7 @@ title: 夏虫
 email: your-email@domain.com
 description: "夏天的一条虫"
 baseurl: "" # the subpath of your site, e.g. /blog
-url: "https://www.zaczh.me/" # the base hostname & protocol for your site, e.g. http://example.com
+url: "http://www.zaczh.me/" # the base hostname & protocol for your site, e.g. http://example.com
 twitter_username: ngoyroe
 github_username:  zaczh
 
