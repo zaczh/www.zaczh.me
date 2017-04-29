@@ -4,10 +4,14 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>首页</title>
+      <title>{% if paginator %}
+          {% assign overwriteTitle = page.title | append: ' Page ' | append: paginator.page %}
+          {{ overwriteTitle }}
+          {% else %}
+          {% if page.title %}{{ page.title }}{% else %}{{ site.title }}{% endif %}
+          {% endif %}</title>
   <meta name="description" content="夏天的一条虫">
   <link rel="stylesheet" href="/assets/main.css">
-  <link rel="canonical" href="http://localhost:4000/">
   <link rel="alternate" type="application/rss+xml" title="夏虫" href="/feed.xml">
 </head>
   <body>
