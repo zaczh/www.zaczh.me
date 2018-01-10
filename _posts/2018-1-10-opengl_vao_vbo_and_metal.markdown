@@ -1,4 +1,10 @@
-# 顶点属性
+---
+layout: post
+title:  "OpenGL VAO & VBO"
+date:   2018-01-10 10:28:01 +0800
+categories: jekyll update
+---
+## 顶点属性
 在OpenGL着色过程中，输入顶点和输出顶点是1:1关系。对于同一个Shader，同样的顶点输入意味着同样的输出。因此，OpenGL缓存了每个顶点的绘制结果。当检查到重复的顶点绘制的时候，直接返回缓存的结果。
 OpenGL是如何检测到重复顶点绘制的呢？如果要逐个比对原始的输入数据，那样显然太慢了。OpenGL采用了顶点属性（vertex attributes)的机制将所有相关的输入变量放在一起。
 顶点属性不仅包括了用户手动指定的每个顶点的变量（通过attribute变量修饰符申明），而且还包含上一个着色器阶段输出的中间结果。譬如，在分段着色器中申明一个变量为out，然后在顶点着色器中声明同样名称的变量为in。这种中间结果的变量也称为全局变量，只有全局变量才能用接口块（Interface Block，其实就是一个C结构体)来定义格式。
@@ -21,9 +27,9 @@ void glBindAttribLocation(GLuint program, GLuint index, const GLchar *name);
 
     如果上述两种方法都没有使用，那么shader中用到的变量会在**链接**的时候自动指定，其顺序是完全任意的（即使是同样的着色器代码）。应该避免自动指定，如果某个变量不再使用了，就应该把它从着色器代码中删除。
 
-# VBO和VAO
+## VBO和VAO
 VAO和VBO是OpenGL里面很容易弄混的两个概念，这里的讲解希望能区分出来它们。
-## VAO
+### VAO
 VAO（Vertex Array Object）是OpenGL中用来放置所有顶点绘制数据的地方。VAO包含了很多子变量，你可以把它想象成一个客户端变量的集合体。修改VAO绑定关系的代码如下：
 ```glsl
 glGenVertexArrays(1, &vao);
@@ -34,7 +40,7 @@ VAO有一个重要特性：它不会对里面的缓冲数据进行拷贝或者�
 VAO是特殊的OpenGL对象，每个OpenGL context只有一个VAO对象（注意：不同的OpenGL context拥有各自独立的VAO绑定关系，相互不影响），所以这里毋需指定绑定的目标。
 当修改任何VAO子变量的时候，都会反映到最上层的VAO上面来，这样当下次重新绑定到此VAO的时候，之前的修改都会保留。这就是OpenGL设计VAO的初衷：将所有变化的部分汇总到一处。
 
-## VBO
+### VBO
 VBO(Vertex Buffer Object)是一个标准的OpenGL 缓冲对象。既然是缓冲对象，说明是用来在CPU和GPU之间共享数据的。其使用方法也比较简单：
 ```glsl
 glBindBuffer(GL_ARRAY_BUFFER, buf1);
@@ -46,7 +52,7 @@ glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 0, 0);
 ```
 注意这里有个OpenGL的兼容问题：glVertexAttribPointer函数的最后一个参数在不同情况下有不同的意义。如果调用此方法之前绑定了VBO，那么该参数表示相对于绑定VBO的偏移量，否则（低版本OpenGL模式）表示实际的buffer数据复制地址指针。
 
-## Index Buffer
+### Index Buffer
 顶点索引数据是通过Index Buffer传递的。 Index Buffer是一种具有特殊用途的buffer对象，它绑定在GL_ELEMENT_ARRAY_BUFFER目标上。另外，因为Index Buffer是客户端的状态，所以OpenGL将Index Buffer的绑定关系放置在VAO里面，这意味着修改Index buffer需要先绑定VAO。由于Index Buffer和VBO类型相似，又都是属于顶点数据，所以有些人也将其称为VIBO（Vertex Index Buffer Object，非官方名称）。
 ```glsl
 glBindVertexArray(vao);
@@ -69,10 +75,10 @@ glVertexAttribPointer(GLKVertexAttribTexCoord0, 3, GL_FLOAT, GL_FALSE, 0, &buf);
 
 **要特别需要注意的是，虽然低版本的OpenGL不支持修改VAO，但是顶点属性数组依然是客户端状态，这意味着修改可能会影响同一个OpenGL context里面的其他程序。**
 
-# 与Metal的比较
+## 与Metal的比较
 使用过Metal之后发觉比OpenGL好了太多：
 - Metal不区分Vetex Buffer Object和其他buffer对象，统一为MTLBuffer
 - Metal可以在客户端和GPU之间共享头文件，头文件里面定义的Buffer Index名称以及数据结构可以在两端共享
-- API简洁明了，没有坑爹的兼容性问题
+- API简洁明了，没有兼容性问题
 
 iOS新项目如果不需要兼容其他平台的话，建议使用Metal绘制。
