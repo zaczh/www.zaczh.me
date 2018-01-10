@@ -64,11 +64,35 @@ glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, elementbuffer);
 
 由于OpenGL的兼容性问题，VAO只有在OpenGL3.0以上版本才能使用。OpenGL ES 2.0无法使用Index Buffer，只能通过通用顶点数据数组（generic vertex attribute array）传递顶点属性，代码如下：
 ```glsl
-glEnableVertexAttribArray(GLKVertexAttribTexCoord0);
-glVertexAttribPointer(GLKVertexAttribTexCoord0, 3, GL_FLOAT, GL_FALSE, 0, &buf);
-... //其他顶点信息
+enum {
+    ATTRIB_TEXCOORD,
+    ATTRIB_VERTEX,
+};
+
+GLfloat coords_buf[] = {
+    1.0f, 0.0f,
+    0.0f, 0.0f,
+    1.0f, 1.0f,
+    0.0f, 1.0f,
+};
+glEnableVertexAttribArray(ATTRIB_TEXCOORD);
+glVertexAttribPointer(ATTRIB_TEXCOORD, 3, GL_FLOAT, GL_FALSE, 0, &coords_buf);
+
+// 其他顶点输入属性
+// 必须保证所有buffer数组的一维长度一致，
+// 而且不小于最终调用glDrawArrays函数的最后两个参数之和。
+// buffer数组的其他维度的数据由shader中属性的格式来指定，
+// 每个buffer可以不一样。
+GLfloat vertex_buf[] = {
+    0.1f, 0.2f, 0.1f
+    0.3f, 0.3f, 0.1f
+    1.2f, 1.0f, 0.1f
+    0.0f, 1.0f, 0.1f
+};
+glEnableVertexAttribArray(ATTRIB_VERTEX);
+glVertexAttribPointer(ATTRIB_VERTEX, 3, GL_FLOAT, GL_FALSE, 0, &vertex_buf);
 ```
-这里，先打开了一个通用的顶点属性数组通道，然后向其传递CPU侧的数据指针，复制数据。
+这里，先打开了一个通用的顶点属性数组通道，然后向其传递CPU侧的数据指针，复制数据，这是OpenGL 2.0下唯一的绘制方法。
 
 **要特别需要注意的是，虽然低版本的OpenGL不支持修改VAO，但是顶点属性数组依然是客户端状态，这意味着修改可能会影响同一个OpenGL context里面的其他程序。**
 
