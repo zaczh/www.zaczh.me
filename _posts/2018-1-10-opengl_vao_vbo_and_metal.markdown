@@ -3,7 +3,7 @@
 OpenGL是如何检测到重复顶点绘制的呢？如果要逐个比对原始的输入数据，那样显然太慢了。OpenGL采用了顶点属性（vertex attributes)的机制将所有相关的输入变量放在一起。
 顶点属性不仅包括了用户手动指定的每个顶点的变量（通过attribute变量修饰符申明），而且还包含上一个着色器阶段输出的中间结果。譬如，在分段着色器中申明一个变量为out，然后在顶点着色器中声明同样名称的变量为in。这种中间结果的变量也称为全局变量，只有全局变量才能用接口块（Interface Block，其实就是一个C结构体)来定义格式。
 
-用于OpenGL不支持变量名，所以顶点属性都是通过数组传递到OpenGL的，名为Buffer Object。Buffer Object是一个类似C数组一样的数据结构，它存储了顶点index和该index对应的属性（attributes）值。Shader从Buffer Object中获取顶点属性有三种方式：
+由于OpenGL不支持变量名，所以顶点属性都是通过数组传递到OpenGL的，名为Buffer Object。Buffer Object是一个类似C数组一样的数据结构，它存储了顶点index和该index对应的属性（attributes）值。Shader从Buffer Object中获取顶点属性有三种方式：
 + 着色器里面指定
 
     通过在着色器中设置in变量的location值来指定：
