@@ -5,18 +5,21 @@ OpenGL是如何检测到重复顶点绘制的呢？如果要逐个比对原始�
 
 用于OpenGL不支持变量名，所以顶点属性都是通过数组传递到OpenGL的，名为Buffer Object。Buffer Object是一个类似C数组一样的数据结构，它存储了顶点index和该index对应的属性（attributes）值。Shader从Buffer Object中获取顶点属性有三种方式：
 + 着色器里面指定
-通过在着色器中设置in变量的location值来指定：
-```glsl
+
+    通过在着色器中设置in变量的location值来指定：
+ ```glsl
 layout(location = 2) in vec4 a_vec;
 ```
-这行语句将VAO中index为2的变量赋值给a_vec。
+    这行语句将VAO中index为2的变量赋值给a_vec。
 + 预链接（Pre-link）阶段指定
-也可以不在着色器里面指定，而是在链接着色器代码前通过OpenGL指令指定：
-```glsl
+
+    也可以不在着色器里面指定，而是在链接着色器代码前通过OpenGL指令指定：
+ ```glsl
 void glBindAttribLocation(GLuint program, GLuint index, const GLchar *name);
 ```
 + 自动指定
-如果上述两种方法都没有使用，那么shader中用到的变量会在**链接**的时候自动指定，其顺序是完全任意的（即使是同样的着色器代码）。应该避免自动指定，如果某个变量不再使用了，就应该把它从着色器代码中删除。
+
+    如果上述两种方法都没有使用，那么shader中用到的变量会在**链接**的时候自动指定，其顺序是完全任意的（即使是同样的着色器代码）。应该避免自动指定，如果某个变量不再使用了，就应该把它从着色器代码中删除。
 
 # VBO和VAO
 VAO和VBO是OpenGL里面很容易弄混的两个概念，这里的讲解希望能区分出来它们。
