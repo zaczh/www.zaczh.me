@@ -62,14 +62,11 @@ glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, elementbuffer);
 ```
 当指定了Index buffers之后，后续调用glDrawElements或者glDrawArray就可以使用该Index buffers来索引index了。
 
-由于OpenGL的兼容性问题，VAO只有在OpenGL3.0以上版本才能使用。OpenGL ES 2.0无法获取和修改VAO绑定关系，意味着OpenGL ES 2.0只能使用传统的glDrawElements方法来绘制原型(primitive)。OpenGL ES
-2.0里面的顶点属性数据是如何传递的呢？
-
-通过通用顶点数据数组（generic vertex attribute array），代码如下：
+由于OpenGL的兼容性问题，VAO只有在OpenGL3.0以上版本才能使用。OpenGL ES 2.0无法使用Index Buffer，只能通过通用顶点数据数组（generic vertex attribute array）传递顶点属性，代码如下：
 ```glsl
 glEnableVertexAttribArray(GLKVertexAttribTexCoord0);
 glVertexAttribPointer(GLKVertexAttribTexCoord0, 3, GL_FLOAT, GL_FALSE, 0, &buf);
-...
+... //其他顶点信息
 ```
 这里，先打开了一个通用的顶点属性数组通道，然后向其传递CPU侧的数据指针，复制数据。
 

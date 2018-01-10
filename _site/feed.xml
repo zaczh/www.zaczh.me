@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><?xml-stylesheet type="text/xml" href="http://localhost:4000/feed.xslt.xml"?><feed xmlns="http://www.w3.org/2005/Atom"><generator uri="http://jekyllrb.com" version="3.3.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-01-10T15:40:27+08:00</updated><id>http://localhost:4000//</id><title type="html">夏虫</title><subtitle>夏天的一条虫</subtitle><entry><title type="html">OpenGL VAO &amp;amp; VBO</title><link href="http://localhost:4000/jekyll/update/2018/01/10/opengl_vao_vbo_and_metal.html" rel="alternate" type="text/html" title="OpenGL VAO &amp; VBO" /><published>2018-01-10T10:28:01+08:00</published><updated>2018-01-10T10:28:01+08:00</updated><id>http://localhost:4000/jekyll/update/2018/01/10/opengl_vao_vbo_and_metal</id><content type="html" xml:base="http://localhost:4000/jekyll/update/2018/01/10/opengl_vao_vbo_and_metal.html">&lt;h2 id=&quot;顶点属性&quot;&gt;顶点属性&lt;/h2&gt;
+<?xml version="1.0" encoding="utf-8"?><?xml-stylesheet type="text/xml" href="http://localhost:4000/feed.xslt.xml"?><feed xmlns="http://www.w3.org/2005/Atom"><generator uri="http://jekyllrb.com" version="3.3.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-01-10T19:36:02+08:00</updated><id>http://localhost:4000//</id><title type="html">夏虫</title><subtitle>夏天的一条虫</subtitle><entry><title type="html">OpenGL VAO &amp;amp; VBO</title><link href="http://localhost:4000/jekyll/update/2018/01/10/opengl_vao_vbo_and_metal.html" rel="alternate" type="text/html" title="OpenGL VAO &amp; VBO" /><published>2018-01-10T10:28:01+08:00</published><updated>2018-01-10T10:28:01+08:00</updated><id>http://localhost:4000/jekyll/update/2018/01/10/opengl_vao_vbo_and_metal</id><content type="html" xml:base="http://localhost:4000/jekyll/update/2018/01/10/opengl_vao_vbo_and_metal.html">&lt;h2 id=&quot;顶点属性&quot;&gt;顶点属性&lt;/h2&gt;
 &lt;p&gt;在OpenGL着色过程中，输入顶点和输出顶点是1:1关系。对于同一个Shader，同样的顶点输入意味着同样的输出。因此，OpenGL缓存了每个顶点的绘制结果。当检查到重复的顶点绘制的时候，直接返回缓存的结果。
 OpenGL是如何检测到重复顶点绘制的呢？如果要逐个比对原始的输入数据，那样显然太慢了。OpenGL采用了顶点属性（vertex attributes)的机制将所有相关的输入变量放在一起。
 顶点属性不仅包括了用户手动指定的每个顶点的变量（通过attribute变量修饰符申明），而且还包含上一个着色器阶段输出的中间结果。譬如，在分段着色器中申明一个变量为out，然后在顶点着色器中声明同样名称的变量为in。这种中间结果的变量也称为全局变量，只有全局变量才能用接口块（Interface Block，其实就是一个C结构体)来定义格式。&lt;/p&gt;
@@ -64,14 +64,11 @@ VAO是特殊的OpenGL对象，每个OpenGL context只有一个VAO对象（注意
 &lt;/div&gt;
 &lt;p&gt;当指定了Index buffers之后，后续调用glDrawElements或者glDrawArray就可以使用该Index buffers来索引index了。&lt;/p&gt;
 
-&lt;p&gt;由于OpenGL的兼容性问题，VAO只有在OpenGL3.0以上版本才能使用。OpenGL ES 2.0无法获取和修改VAO绑定关系，意味着OpenGL ES 2.0只能使用传统的glDrawElements方法来绘制原型(primitive)。OpenGL ES
-2.0里面的顶点属性数据是如何传递的呢？&lt;/p&gt;
-
-&lt;p&gt;通过通用顶点数据数组（generic vertex attribute array），代码如下：&lt;/p&gt;
+&lt;p&gt;由于OpenGL的兼容性问题，VAO只有在OpenGL3.0以上版本才能使用。OpenGL ES 2.0无法使用Index Buffer，只能通过通用顶点数据数组（generic vertex attribute array）传递顶点属性，代码如下：&lt;/p&gt;
 &lt;div class=&quot;language-glsl highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;glEnableVertexAttribArray&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;GLKVertexAttribTexCoord0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
 &lt;span class=&quot;n&quot;&gt;glVertexAttribPointer&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;GLKVertexAttribTexCoord0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;GL_FLOAT&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;GL_FALSE&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;buf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;...&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
+&lt;span class=&quot;p&quot;&gt;...&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;//其他顶点信息
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 &lt;p&gt;这里，先打开了一个通用的顶点属性数组通道，然后向其传递CPU侧的数据指针，复制数据。&lt;/p&gt;
 
