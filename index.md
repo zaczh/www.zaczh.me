@@ -1,18 +1,8 @@
 ---
-layout: page
-title: 重新整理
-tagline:
+#
+# You don't need to edit this file, it's empty on purpose.
+# Edit minima's home layout instead if you wanna make some changes
+# See: https://jekyllrb.com/docs/themes/#overriding-theme-defaults
+#
+layout: home
 ---
-<p>
-我的花园已经荒废好久<br/>
-里面杂草丛生<br/>
-往昔光影浮现<br/>
-微风拂过<br/>
-依然是我喜欢的感觉<br/>
-<br/>
-人的情绪千变万化<br/>
-万物却始终如一<br/>
-追求何时是尽头<br/>
-也许时间会最终告诉你<br/>
-<br/>
-</p>
